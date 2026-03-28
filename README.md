@@ -1,6 +1,6 @@
 # 🎁 Epal Gift Counter 
 
-A powerful and lightweight **Tampermonkey** script designed to track, count, and filter gifts in real-time within **Epal.gg** chatrooms.
+A lightweight **Tampermonkey** script designed to track, count, and filter gifts in real-time within **Epal.gg** chatrooms.
 
 ---
 
