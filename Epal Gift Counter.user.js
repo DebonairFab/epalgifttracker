@@ -3,8 +3,8 @@
 // @namespace    http://tampermonkey.net/
 // @version      1.9.4
 // @description  Tracker with Timer, target filter and moveable window. 
-// @downloadURL  https://raw.githubusercontent.com/DebonairFab/epalgifttracker/refs/heads/main/Epal%20Gift%20Counter
-// @updateURL    https://raw.githubusercontent.com/DebonairFab/epalgifttracker/refs/heads/main/Epal%20Gift%20Counter
+// @downloadURL  https://raw.githubusercontent.com/DebonairFab/epalgifttracker/refs/heads/main/Epal%20Gift%20Counter.user.js
+// @updateURL    https://raw.githubusercontent.com/DebonairFab/epalgifttracker/refs/heads/main/Epal%20Gift%20Counter.user.js
 // @author       Fab
 // @match        https://www.epal.gg/chill/chatroom/*
 // @grant        none
