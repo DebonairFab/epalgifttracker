@@ -1,12 +1,12 @@
 // ==UserScript==
 // @name         Epal Gift Counter
 // @namespace    http://tampermonkey.net/
-// @version      1.9.5
-// @description  Tracker with Timer, target filter and moveable window. 
-// @downloadURL  https://raw.githubusercontent.com/DebonairFab/epalgifttracker/refs/heads/main/Epal%20Gift%20Counter.user.js
-// @updateURL    https://raw.githubusercontent.com/DebonairFab/epalgifttracker/refs/heads/main/Epal%20Gift%20Counter.user.js
+// @version      1.9.6
+// @description  Tracker with Timer (MM:SS), target filter and moveable window.
 // @author       Fab
 // @match        https://www.epal.gg/chill/chatroom/*
+// @downloadURL  https://raw.githubusercontent.com/DebonairFab/epalgifttracker/refs/heads/main/Epal%20Gift%20Counter.user.js
+// @updateURL    https://raw.githubusercontent.com/DebonairFab/epalgifttracker/refs/heads/main/Epal%20Gift%20Counter.user.js
 // @grant        none
 // ==/UserScript==
 
@@ -36,7 +36,7 @@
 
     dashboard.innerHTML = `
         <div id="drag-handle" style="font-weight:bold; color:#ff4d89; margin-bottom:12px; display:flex; justify-content:space-between; font-size:11px; letter-spacing:1px; cursor:move; padding-bottom:5px; border-bottom:1px solid rgba(255,77,137,0.2);">
-            <span>🎁 GIFT TRACKER </span>
+            <span>🎁 GIFT TRACKER</span>
             <span id="status-indicator" style="color:#ff4d4d;">OFF</span>
         </div>
 
@@ -46,9 +46,9 @@
         </div>
 
         <div style="background:rgba(255,255,255,0.05); padding:10px; border-radius:8px; margin-bottom:12px; display:flex; align-items:center; gap:8px;">
-            <input type="number" id="input-minutes" value="03" min="1" style="width:45px; background:#222; border:1px solid #444; color:white; border-radius:4px; padding:4px; font-size:12px;">
+            <input type="number" id="input-minutes" value="3" min="1" style="width:45px; background:#222; border:1px solid #444; color:white; border-radius:4px; padding:4px; font-size:12px;">
             <span style="font-size:11px; color:#ccc;">min</span>
-            <div id="display-timer" style="flex:1; text-align:right; font-family:monospace; font-size:16px; font-weight:bold; color:#4CAF50;">00:00</div>
+            <div id="display-timer" style="flex:1; text-align:right; font-family:monospace; font-size:20px; font-weight:bold; color:#4CAF50;">00:00</div>
         </div>
 
         <div id="top-donors" style="background:rgba(255,255,255,0.03); padding:8px; border-radius:6px; margin-bottom:12px; font-size:12px; min-height:40px; border-left:2px solid #ff4d89;">Waiting...</div>
@@ -65,7 +65,7 @@
     `;
     document.body.appendChild(dashboard);
 
-
+    // --- DRAG LOGIC ---
     let isDragging = false, offset = { x: 0, y: 0 };
     const handle = document.getElementById('drag-handle');
 
@@ -84,7 +84,7 @@
 
     document.onmouseup = () => isDragging = false;
 
-
+    // --- CORE LOGIC ---
     const updateUI = () => {
         document.getElementById('epal-count').innerText = `Gifts : ${totalGifts}`;
         document.getElementById('epal-value').innerText = `${totalValue.toFixed(2)} 💎`;
@@ -99,6 +99,12 @@
         document.getElementById('top-donors').innerHTML = html || "Waiting...";
     };
 
+    const formatTime = (totalSeconds) => {
+        const mins = Math.floor(totalSeconds / 60);
+        const secs = totalSeconds % 60;
+        return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    };
+
     const processNode = (node) => {
         if (!isRunning) return;
         const giftPart = node.querySelector('.epal-live-chat.text-positive-variant-normal');
@@ -110,6 +116,7 @@
 
             const messageContainer = giftPart.closest('.hover\\:bg-surface-element-normal');
             if (messageContainer) {
+                // Precise Donor Detection (checks element before the gift text)
                 const donorWrapper = giftPart.previousElementSibling;
                 let donorName = "Inconnu";
                 if (donorWrapper) {
@@ -145,10 +152,9 @@
         }
     };
 
-    const formatTime = (s) => `${Math.floor(s/60).toString().padStart(2,'0')}:${(s%60).toString().padStart(2,'0')}`;
-
     const stopTracker = () => {
-        isRunning = false; clearInterval(timerInterval);
+        isRunning = false; 
+        clearInterval(timerInterval);
         document.getElementById('status-indicator').innerText = "OFF";
         document.getElementById('status-indicator').style.color = "#ff4d4d";
         document.getElementById('btn-start').innerText = "START";
@@ -156,18 +162,26 @@
     };
 
     const startTracker = () => {
-        const mins = parseInt(document.getElementById('input-minutes').value) || 1;
-        if (!timeLeft || timeLeft <= 0) timeLeft = mins * 60;
+        const mins = parseFloat(document.getElementById('input-minutes').value) || 1;
+        if (timeLeft <= 0) timeLeft = Math.floor(mins * 60);
+        
         isRunning = true;
         document.getElementById('status-indicator').innerText = "LIVE";
         document.getElementById('status-indicator').style.color = "#4CAF50";
         document.getElementById('btn-start').innerText = "STOP";
         document.getElementById('btn-start').style.background = "#ff4d4d";
+        
+        // Initial display
+        document.getElementById('display-timer').innerText = formatTime(timeLeft);
+
         if (timerInterval) clearInterval(timerInterval);
         timerInterval = setInterval(() => {
-            timeLeft--;
-            document.getElementById('display-timer').innerText = formatTime(timeLeft);
-            if (timeLeft <= 0) stopTracker();
+            if (timeLeft > 0) {
+                timeLeft--;
+                document.getElementById('display-timer').innerText = formatTime(timeLeft);
+            } else {
+                stopTracker();
+            }
         }, 1000);
     };
 
