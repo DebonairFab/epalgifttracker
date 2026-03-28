@@ -1,4 +1,4 @@
-# 🎁 Epal Gift Counter Pro (v1.9.3)
+# 🎁 Epal Gift Counter 
 
 A powerful and lightweight **Tampermonkey** script designed to track, count, and filter gifts in real-time within **Epal.gg** chatrooms.
 
