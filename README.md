@@ -2,7 +2,8 @@
 
 A lightweight **Tampermonkey** script designed to track, count, and filter gifts in real-time within **Epal.gg** chatrooms.
 
----
+---<img width="257" height="342" alt="Capture d&#39;écran 2026-03-29 002853" src="https://github.com/user-attachments/assets/478a279f-1097-4058-b8fe-364d819e2dde" />
+
 
 ## ✨ Features
 
