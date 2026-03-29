@@ -69,6 +69,8 @@ GIFT LEADERBOARD (Everyone) 🏆
 2. PlayerB : 5.20 $
 3. PlayerC : 0.00 $
 ```
+
+---
 💎 Supported Gift Prices
 
 The script recognizes most standard gifts, including:
@@ -77,12 +79,14 @@ The script recognizes most standard gifts, including:
 
     Standard: Rose, Thumbs Up, Curious Locket, Magic Donut, and more.
 
+
+---
 💬 4. Feedback & Support
 
 Your feedback is essential for improving this tool!
 
-    Suggestions: Please visit the Issues section of the repository.
+  Suggestions: Please visit the Issues section of the repository.
 
-    Bugs: If a gift price is incorrect or a name is not detected, feel free to report it there.
+  Bugs: If a gift price is incorrect or a name is not detected, feel free to report it there.
 
 <p align="center">Created with ❤️ by <b>Fab</b></p>
