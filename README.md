@@ -77,11 +77,48 @@ GIFT LEADERBOARD (Everyone) 🏆
 ---
 💎 Supported Gift Prices
 
-The script recognizes most standard gifts, including:
+You'll find here all the gift currently supported (if a gift is not on this list it'll go under default with a value of 0) :
 
-    Premium: Heavenly Match (2000), Ace Reign (1600), Golden Ascension (1000), Loving Castle (500)...
-
-    Standard: Rose, Thumbs Up, Curious Locket, Magic Donut, and more.
+        "Springtime Honey": 10, 
+        "Rose": 1, 
+        "Thumbs Up": 2, 
+        "Forever With You": 600,
+        "Sweet Treat": 3, 
+        "Magic Donut": 5, 
+        "Party With me": 7, 
+        "Heavenly Match": 2000,
+        "Dancing Ryan": 10, "Soft Touch": 20, 
+        "My Little Angel": 50, 
+        "Cruise With Me": 100,
+        "Only Mine": 300, 
+        "Golden Ascension": 1000, 
+        "Ace Reign": 1600, 
+        "Lolipop": 0.20,
+        "Luv ya": 0.50, 
+        "Sweet Claw": 1, 
+        "Energy Drink": 2, 
+        "Disco Dancing": 2,
+        "Marry me": 5, 
+        "Eternal Love": 10, 
+        "Streamer gear": 10, 
+        "Cyberpunk": 20,
+        "Space shuttle": 20, 
+        "Pink Dream": 50, 
+        "Halloween Vibe": 50, 
+        "Lucky Draw": 50,
+        "Fairy Land": 50, 
+        "Be With You": 50, 
+        "Romantic Trip": 50, 
+        "Vanilla Sky": 50,
+        "Kitten uwu": 100, 
+        "Bunny uwu": 100, 
+        "Sweet Carnival": 200, 
+        "Hypercar": 200,
+        "Loving castle": 500, 
+        "Curious Locket": 5, 
+        "EE":0, 
+        "Turkish Coffee":0, 
+        "Default": 0
 
 
 ---
