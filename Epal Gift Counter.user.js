@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Epal Gift Tracker
+// @name         Epal Gift Tracker - Detailed Logs Edition
 // @namespace    http://tampermonkey.net/
-// @version      3.0.1
-// @description  Cloud Sync + Animations + Leaderboard Medals
+// @version      3.1.0
+// @description  Cloud Sync + Detailed Console Logs + Medals
 // @author       Fab
 // @match        https://www.epal.gg/chill/chatroom/*
 // @grant        none
@@ -14,21 +14,13 @@
     const JSON_URL = "https://raw.githubusercontent.com/DebonairFab/epalgifttracker/refs/heads/main/prices.json";
     const customIcon = "https://raw.githubusercontent.com/DebonairFab/epalgifttracker/refs/heads/main/Sans%20titre.png";
 
-    // --- CSS ANIMATIONS & STYLES ---
     const style = document.createElement('style');
     style.innerHTML = `
         #epal-tracker-pro button { transition: all 0.2s ease; cursor: pointer; border: none; outline: none; }
         #epal-tracker-pro button:hover { filter: brightness(1.2); transform: translateY(-1px); }
         #epal-tracker-pro button:active { transform: translateY(1px) scale(0.96); }
         #btn-sync:hover { transform: rotate(90deg); }
-        .gift-row {
-            animation: fadeIn 0.3s ease-out;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 5px;
-            padding: 2px 0;
-        }
+        .gift-row { animation: fadeIn 0.3s ease-out; display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
         @keyframes fadeIn { from { opacity: 0; transform: translateX(-5px); } to { opacity: 1; transform: translateX(0); } }
     `;
     document.head.appendChild(style);
@@ -42,11 +34,11 @@
             const response = await fetch(JSON_URL);
             if (!response.ok) throw new Error("Sync failed");
             giftPrices = await response.json();
-            console.log("%c✅ Prices Synced:", "color: #00d4ff; font-weight: bold;", giftPrices);
+            console.log("%c✅ Prices Synced", "color: #00d4ff; font-weight: bold;");
             const indicator = document.getElementById('status-indicator');
             if(indicator) {
                 indicator.innerText = "SYNCED"; indicator.style.color = "#00d4ff";
-                setTimeout(() => {
+                setTimeout(() => { 
                     indicator.innerText = isRunning ? "LIVE" : "OFF";
                     indicator.style.color = isRunning ? "#4CAF50" : "#ff4d4d";
                 }, 2000);
@@ -54,7 +46,6 @@
         } catch (e) { console.error("❌ Sync Error:", e); }
     }
 
-    // --- INTERFACE ---
     const dashboard = document.createElement('div');
     dashboard.id = "epal-tracker-pro";
     dashboard.style = `position: fixed; top: 100px; left: 20px; z-index: 99999; background: rgba(15, 15, 15, 0.98); color: white; padding: 18px; border-radius: 12px; font-family: 'Segoe UI', sans-serif; border: 1px solid #ff4d89; min-width: 260px; box-shadow: 0 15px 40px rgba(0,0,0,0.6);`;
@@ -73,7 +64,7 @@
             <span style="font-size:11px; color:#ccc;">min</span>
             <div id="display-timer" style="flex:1; text-align:right; font-family:monospace; font-size:20px; font-weight:bold; color:#4CAF50;">00:00</div>
         </div>
-        <div id="top-donors" style="background:rgba(255,255,255,0.03); padding:8px; border-radius:6px; margin-bottom:12px; font-size:12px; min-height:60px; border-left:2px solid #ff4d89;">Waiting for gifts...</div>
+        <div id="top-donors" style="background:rgba(255,255,255,0.03); padding:8px; border-radius:6px; margin-bottom:12px; font-size:12px; min-height:60px; border-left:2px solid #ff4d89;">Waiting...</div>
         <div style="margin-bottom:12px;">
             <div style="display:flex; align-items:center; gap:8px;">
                 <span id="epal-value-num" style="font-size:1.8em; font-weight:bold; color:#ffce00;">0.00</span>
@@ -93,15 +84,9 @@
         const sorted = Object.entries(donors).sort(([,a],[,b]) => b-a).slice(0,3);
         const medals = ["🥇", "🥈", "🥉"];
         let html = "";
-
         sorted.forEach((d, i) => {
-            html += `
-            <div class="gift-row">
-                <span>${medals[i]} ${d[0]}</span>
-                <span style="color:#ffce00; font-weight:bold;">${d[1].toFixed(2)} $</span>
-            </div>`;
+            html += `<div class="gift-row"><span>${medals[i]} ${d[0]}</span><span style="color:#ffce00; font-weight:bold;">${d[1].toFixed(2)} $</span></div>`;
         });
-
         document.getElementById('top-donors').innerHTML = html || "Waiting for gifts...";
     };
 
@@ -110,8 +95,8 @@
         const giftPart = node.querySelector('.epal-live-chat.text-positive-variant-normal');
         if (giftPart && giftPart.innerText.includes("gifted")) {
             const fullText = giftPart.innerText;
-            const targetFilter = document.getElementById('input-target').value.trim().toLowerCase();
-            if (targetFilter !== "" && !fullText.toLowerCase().includes("gifted " + targetFilter)) return;
+            const targetFilter = document.getElementById('input-target').value.trim();
+            if (targetFilter !== "" && !fullText.toLowerCase().includes("gifted " + targetFilter.toLowerCase())) return;
 
             const messageContainer = giftPart.closest('.hover\\:bg-surface-element-normal');
             let donorName = "User";
@@ -128,31 +113,30 @@
                 const price = foundGift ? giftPrices[foundGift] : 0;
                 const totalAmount = price * quantity;
 
+                // --- DETAILED LOGS ---
                 if (foundGift) {
                     console.log(
-                        `%c🎁 ${foundGift} x${quantity} | %cTo: ${targetFilter || "Everyone"} %c| From: ${donorName} | %cValue: $${totalAmount.toFixed(2)}`,
-                        "color:#4CAF50; font-weight:bold;",
-                        "color:#00d4ff;",
-                        "color:#ffffff;",
+                        `%c🎁 [GIFT] ${foundGift} x${quantity} | %cTo: ${targetFilter || "Everyone"} %c| From: ${donorName} | %cValue: $${totalAmount.toFixed(2)}`, 
+                        "color:#4CAF50; font-weight:bold;", 
+                        "color:#00d4ff;", 
+                        "color:#ffffff;", 
                         "color:#ffce00; font-weight:bold;"
                     );
                 } else {
                     console.warn(`%c❓ UNKNOWN GIFT: ${fullText}`, "color:#ff9800;");
+                }
 
-                totalValue += totalAmount;
+                totalValue += totalAmount; 
                 donors[donorName] = (donors[donorName] || 0) + totalAmount;
                 updateUI();
             }
         }
     };
 
-    // --- BUTTON ACTIONS ---
     document.getElementById('btn-sync').onclick = syncPrices;
-
     document.getElementById('btn-reset').onclick = () => {
-        if (confirm("⚠️ Reset everything to 0.00?")) {
+        if (confirm("⚠️ Reset everything?")) {
             totalValue = 0; donors = {}; updateUI();
-            console.log("%c♻ Tracker Reset Complete", "color: #ff4d4d");
         }
     };
 
@@ -162,19 +146,15 @@
         const medals = ["🥇","🥈","🥉"];
         let msg = `🏆 TOP DONORS (${target})\n`;
         sorted.forEach((d, i) => msg += `${medals[i]} ${d[0]}: ${d[1].toFixed(1)}$\n`);
-        if (sorted.length === 0) msg += "Waiting for gifts...";
-
         const chat = document.querySelector('.ql-editor');
         if (chat) {
             chat.innerHTML = msg.split('\n').map(l => `<p>${l}</p>`).join('');
-            chat.classList.remove('ql-blank');
             chat.focus();
             setTimeout(() => {
                 chat.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, key: 'Enter', keyCode: 13 }));
                 const btn = document.getElementById('btn-copy');
-                const oldText = btn.innerText;
                 btn.innerText = "SENT !"; btn.style.background = "#4CAF50"; btn.style.color = "white";
-                setTimeout(() => { btn.innerText = oldText; btn.style.background = "#ffce00"; btn.style.color = "black"; }, 1500);
+                setTimeout(() => { btn.innerText = "SEND"; btn.style.background = "#ffce00"; btn.style.color = "black"; }, 1500);
             }, 300);
         }
     };
@@ -185,7 +165,7 @@
             timeLeft = Math.floor(mins * 60); isRunning = true;
             this.innerText = "STOP"; this.style.background = "#f44336";
             document.getElementById('status-indicator').innerText = "LIVE"; document.getElementById('status-indicator').style.color = "#4CAF50";
-            timerInterval = setInterval(() => {
+            timerInterval = setInterval(() => { 
                 if (timeLeft > 0) {
                     timeLeft--;
                     document.getElementById('display-timer').innerText = `${Math.floor(timeLeft/60).toString().padStart(2,'0')}:${(timeLeft%60).toString().padStart(2,'0')}`;
@@ -203,11 +183,9 @@
     };
 
     syncPrices();
-    setInterval(syncPrices, 600000);
     const observer = new MutationObserver(m => m.forEach(mu => mu.addedNodes.forEach(processNode)));
     observer.observe(document.body, { childList: true, subtree: true });
 
-    // Drag logic
     let isDragging = false, ox, oy;
     document.getElementById('drag-handle').onmousedown = e => { isDragging = true; ox = e.clientX - dashboard.offsetLeft; oy = e.clientY - dashboard.offsetTop; };
     window.onmousemove = e => { if (isDragging) { dashboard.style.left = (e.clientX - ox) + "px"; dashboard.style.top = (e.clientY - oy) + "px"; } };
