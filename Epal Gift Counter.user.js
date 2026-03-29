@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Epal Gift Counter
+// @name         Epal Gift Counter - Icon Right
 // @namespace    http://tampermonkey.net/
-// @version      1.9.6
-// @description  Tracker with Timer (MM:SS), target filter and moveable window.
+// @version      1.9.8
+// @description  Tracker with Timer, target filter and custom gift icon on the right.
 // @author       Fab
 // @match        https://www.epal.gg/chill/chatroom/*
 // @downloadURL  https://raw.githubusercontent.com/DebonairFab/epalgifttracker/refs/heads/main/Epal%20Gift%20Counter.user.js
@@ -13,7 +13,8 @@
 (function() {
     'use strict';
 
-    const customIcon = "https://raw.githubusercontent.com/DebonairFab/epalgifttracker/refs/heads/main/Sans%20titre.png";
+    // Ton icône personnalisée
+    const customIcon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAMAAAC7IEhfAAABm1BMVEUAAACDav////+EZO5rXv16YvRsX/xvYPqGZO9vYPqLZe1wYPt7Y/Z3aP+IaPOHcf9xYfl4YvVxX/mGZe1tX/uCZPGHZe6BY/F1YfeIZu5wZv+KZvBqXv2JZuxrX/yJZOtzYfiJZe14YvZ9Y/OKZuxwYPqJZOyMZ+x3YvV9Y/GAZPFrYPxrX/yAY/CCZfJtYP9qYP91ZviDZvCAY/BvX/ltX/p4YfR6YvNxYPd0YPZyYPiDY++FZO19YvFzYPeCY+6GZO12YfVrXvt5YfR+Y/F/YvCEZO51YfZ7YfJ8YvOHZOtwYPlwX/f/uEB1YPaIZez/pkX/qET/qkT/tUH/uz+JZOz/sEL/vT/6qkn/rEP/s0LLlIf/rUP/ukD6oUz+pEaFaOaGaeGVctCeeMSngLf/vz9uX/uCY/B9ZOqLbNyQbtaXdM6YcsiufK6yg6m7jZ3Flo7LjYjPnILQjYHcpm/vnVrrs1n1nVL1u0z6tkehdryieruneba4hJ+5g56/hpfAkJTFiY/Xl3bhqmjjombtplnzqFPzslD9qUZy5oOZAAAAM3RSTlMADAHzgH/zv7+lf3JSFhYJ8+jZ2dbVpYGAciMj/vPo6NPTqqqqg4NS8/PoqqqlclJSIyMny+XFAAADCUlEQVQ4y3XUZ1/iQBAG8KWDiL33fr2iCSBFMIGYaChSDg+7nr3X67187JvZ3QDe6bzl/3tmJhlCblZ3Z5uz2WJpdrZ1dpM7q25sUFXVKahgMB6JtLbX3cpMNb1qMqmCAhaPT0Ymtyztpv/dvX5VTdK8OMaB83q98sPaf5i5JpfL8TzqgCGUJZu52tWPqDkWhwzbMiVLUmi4vipvxGDgkIFb81IWCs0MVzJrcmqSx9HxIG79GBwyRRFt5T3AGQ+FxXn3rjdY3IwiiiLfyNSfTNKulW13rwsr6CBOEaeFRhNrDPMxh4G47M7l5rnE4pRpgAJtXtfLu5afysrlZuGIjSciE6L3PQDHwEFYEBR1cvD7ZqGwFlJmkIEDGO0AOEjngzTWVo6cF7LZ39BXVKiLQukDcC9T7NVCUSefgps7rY6LJhL+F6STbRsx3HEhuzg3t6Gg40xP+P1u0oY3gHHUSUdZdPMr4FhcApQ/HHYRZxDaRowTOKRs/ocoCkZbZGGfgzTTvoxJG4vULeRf0ToRErofyufzNRGLsYUkh9bfUraQz5eKxUz6RNChMcRBNRBLua20h26BulImk/4axTxgAV8g0EBat5DhqchfXmP9zOcxLv1Z1zGOslmtiThpWuVUQr9KRYhLfcKukIdsVht3kCcAkeGp4MN7XyoCSx3q9LEEAGrjUC7y1ItxmMdezrcMugP2VJBpCCfc5KUshwDiRaFb/ZNOp5Y/YJqfj4duoouQVn557KQ+QtzSO8jDNaBAoWshhLSDo9OhEy5Sy0vrzPkgbRYZ1Cge7gM+HZ7UPrh9Nh1vi+6N3UOgbBDIXfRs+WoNp0MGirlYzMr+XI2Qh0yIbi9d7YahL7BKXCzWxz9Btcbl6QcXO5TBeNxhXs8zwsvGLz5xtsrH07RyW2xslHmIXfL2qp+/NMYYfGyu+kgNAeMnhUwzGNSjemZ4Zoee4GlsXYP1WCt5fKPGsJFX5fqe3/Jp7migTqswu9VEbivP6ACo8rYtVg+5s7rcLkeT3d7icLm7bv7yF5xoPVJ1zHVQAAAAAElFTkSuQmCC";
 
     const giftPrices = {
         "Springtime Honey": 10, "Rose": 1, "Thumbs Up": 2, "Forever With You": 600,
@@ -38,7 +39,7 @@
 
     dashboard.innerHTML = `
         <div id="drag-handle" style="font-weight:bold; color:#ff4d89; margin-bottom:12px; display:flex; justify-content:space-between; font-size:11px; letter-spacing:1px; cursor:move; padding-bottom:5px; border-bottom:1px solid rgba(255,77,137,0.2);">
-            <span>🎁 GIFT TRACKER</span>
+            <span>🎁 GIFT TRACKER v1.9.8</span>
             <span id="status-indicator" style="color:#ff4d4d;">OFF</span>
         </div>
 
@@ -48,7 +49,7 @@
         </div>
 
         <div style="background:rgba(255,255,255,0.05); padding:10px; border-radius:8px; margin-bottom:12px; display:flex; align-items:center; gap:8px;">
-            <input type="number" id="input-minutes" value="3" min="1" style="width:45px; background:#222; border:1px solid #444; color:white; border-radius:4px; padding:4px; font-size:12px;">
+            <input type="number" id="input-minutes" value="30" min="1" style="width:45px; background:#222; border:1px solid #444; color:white; border-radius:4px; padding:4px; font-size:12px;">
             <span style="font-size:11px; color:#ccc;">min</span>
             <div id="display-timer" style="flex:1; text-align:right; font-family:monospace; font-size:20px; font-weight:bold; color:#4CAF50;">00:00</div>
         </div>
@@ -57,8 +58,10 @@
 
         <div style="margin-bottom:12px;">
             <div id="epal-count" style="font-size:11px; color:#aaa;">Gifts : 0</div>
-            <div id="epal-value" style="font-size:1.8em; font-weight:bold; color:#ffce00;">0.00 </div>
-            <img src="${customIcon}" style="width:24px; height:24px; object-fit:contain;">
+            <div style="display:flex; align-items:center; gap:6px; margin-top:2px;">
+                <div id="epal-value" style="font-size:1.8em; font-weight:bold; color:#ffce00;">0.00</div>
+                <img src="${customIcon}" style="width:24px; height:24px; object-fit:contain; display:block;">
+            </div>
         </div>
 
         <div style="display:flex; gap:8px;">
@@ -71,26 +74,23 @@
     // --- DRAG LOGIC ---
     let isDragging = false, offset = { x: 0, y: 0 };
     const handle = document.getElementById('drag-handle');
-
     handle.onmousedown = (e) => {
         isDragging = true;
         offset.x = e.clientX - dashboard.offsetLeft;
         offset.y = e.clientY - dashboard.offsetTop;
     };
-
     document.onmousemove = (e) => {
         if (!isDragging) return;
         dashboard.style.left = (e.clientX - offset.x) + "px";
         dashboard.style.top = (e.clientY - offset.y) + "px";
         dashboard.style.bottom = "auto";
     };
-
     document.onmouseup = () => isDragging = false;
 
     // --- CORE LOGIC ---
     const updateUI = () => {
         document.getElementById('epal-count').innerText = `Gifts : ${totalGifts}`;
-        document.getElementById('epal-value').innerText = `${totalValue.toFixed(2)} 💎`;
+        document.getElementById('epal-value').innerText = `${totalValue.toFixed(2)}`;
         const sorted = Object.entries(donors).sort(([,a],[,b]) => b-a).slice(0,3);
         let html = "";
         sorted.forEach((d, i) => {
@@ -114,12 +114,10 @@
         if (giftPart && giftPart.innerText.includes("gifted")) {
             const fullText = giftPart.innerText;
             const targetFilter = document.getElementById('input-target').value.trim();
-
             if (targetFilter !== "" && !fullText.toLowerCase().includes("gifted " + targetFilter.toLowerCase())) return;
 
             const messageContainer = giftPart.closest('.hover\\:bg-surface-element-normal');
             if (messageContainer) {
-                // Precise Donor Detection (checks element before the gift text)
                 const donorWrapper = giftPart.previousElementSibling;
                 let donorName = "Inconnu";
                 if (donorWrapper) {
@@ -141,14 +139,6 @@
                     totalGifts += quantity;
                     totalValue += totalChange;
                     donors[donorName] = (donors[donorName] || 0) + totalChange;
-
-                    console.log(
-                        `%c 🎁 GIFT %c ${donorName} %c send ${foundGift} x${quantity} to ${targetFilter || 'Anyone'} %c +${totalChange}💎 `,
-                        "background:#ff4d89; color:white; font-weight:bold; border-radius:3px 0 0 3px;",
-                        "background:#333; color:#ffce00; font-weight:bold;",
-                        "background:#222; color:#ccc;",
-                        "background:#4CAF50; color:white; font-weight:bold; border-radius:0 3px 3px 0;"
-                    );
                     updateUI();
                 }
             }
@@ -156,8 +146,7 @@
     };
 
     const stopTracker = () => {
-        isRunning = false; 
-        clearInterval(timerInterval);
+        isRunning = false; clearInterval(timerInterval);
         document.getElementById('status-indicator').innerText = "OFF";
         document.getElementById('status-indicator').style.color = "#ff4d4d";
         document.getElementById('btn-start').innerText = "START";
@@ -167,16 +156,12 @@
     const startTracker = () => {
         const mins = parseFloat(document.getElementById('input-minutes').value) || 1;
         if (timeLeft <= 0) timeLeft = Math.floor(mins * 60);
-        
         isRunning = true;
         document.getElementById('status-indicator').innerText = "LIVE";
         document.getElementById('status-indicator').style.color = "#4CAF50";
         document.getElementById('btn-start').innerText = "STOP";
         document.getElementById('btn-start').style.background = "#ff4d4d";
-        
-        // Initial display
         document.getElementById('display-timer').innerText = formatTime(timeLeft);
-
         if (timerInterval) clearInterval(timerInterval);
         timerInterval = setInterval(() => {
             if (timeLeft > 0) {
