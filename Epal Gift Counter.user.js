@@ -142,7 +142,7 @@
     document.getElementById('btn-sync').onclick = syncPrices;
 
     document.getElementById('btn-reset').onclick = () => {
-        if (confirm("⚠️ Reset everything to 0.00?")) {
+        if (confirm("⚠️ Reset everything ?")) {
             totalValue = 0; donors = {}; updateUI();
             console.log("%c♻ Tracker Reset Complete", "color: #ff4d4d");
         }
