@@ -68,7 +68,7 @@ GIFT LEADERBOARD (Everyone) 🏆
 1. PlayerA : 10.50 $
 2. PlayerB : 5.20 $
 3. PlayerC : 0.00 $
-
+```
 💎 Supported Gift Prices
 
 The script recognizes most standard gifts, including:
