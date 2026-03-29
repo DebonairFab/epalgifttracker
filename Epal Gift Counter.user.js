@@ -1,11 +1,11 @@
 // ==UserScript==
-// @name          Epal Gift Counter
-// @namespace     http://tampermonkey.net/
-// @version       1.9.9
-// @description   Tracker with Timer, target filter and custom icon on the right.
-// @author        Fab
-// @match         https://www.epal.gg/chill/chatroom/*
-// @grant         none
+// @name         Epal Gift Counter
+// @namespace    http://tampermonkey.net/
+// @version      2.0.1
+// @description  Fixed dragging and custom icon alignment.
+// @author       Fab
+// @match        https://www.epal.gg/chill/chatroom/*
+// @grant        none
 // ==/UserScript==
 
 (function() {
@@ -29,13 +29,14 @@
     let totalGifts = 0, totalValue = 0, isRunning = false, donors = {};
     let timerInterval = null, timeLeft = 0;
 
-    // --- UI ---
+    // --- UI CREATION ---
     const dashboard = document.createElement('div');
     dashboard.id = "gemini-tracker-ui";
+    // Important: position fixed et curseur par défaut
     dashboard.style = "position:fixed; top:100px; left:20px; z-index:10000; background:rgba(15,15,15,0.98); color:white; padding:18px; border-radius:12px; font-family:sans-serif; border:1px solid #ff4d89; min-width:260px; box-shadow:0 15px 40px rgba(0,0,0,0.6); user-select:none;";
 
     dashboard.innerHTML = `
-        <div id="drag-handle" style="font-weight:bold; color:#ff4d89; margin-bottom:12px; display:flex; justify-content:space-between; font-size:11px; letter-spacing:1px; cursor:move; padding-bottom:5px; border-bottom:1px solid rgba(255,77,137,0.2);">
+        <div id="drag-handle" style="font-weight:bold; color:#ff4d89; margin-bottom:12px; display:flex; justify-content:space-between; font-size:11px; letter-spacing:1px; cursor:move; padding-bottom:5px; border-bottom:1px solid rgba(255,77,137,0.2); width:100%;">
             <span>🎁 GIFT TRACKER</span>
             <span id="status-indicator" style="color:#ff4d4d;">OFF</span>
         </div>
@@ -46,7 +47,7 @@
         </div>
 
         <div style="background:rgba(255,255,255,0.05); padding:10px; border-radius:8px; margin-bottom:12px; display:flex; align-items:center; gap:8px;">
-            <input type="number" id="input-minutes" value="3" min="1" style="width:45px; background:#222; border:1px solid #444; color:white; border-radius:4px; padding:4px; font-size:12px;">
+            <input type="number" id="input-minutes" value="30" min="1" style="width:45px; background:#222; border:1px solid #444; color:white; border-radius:4px; padding:4px; font-size:12px;">
             <span style="font-size:11px; color:#ccc;">min</span>
             <div id="display-timer" style="flex:1; text-align:right; font-family:monospace; font-size:20px; font-weight:bold; color:#4CAF50;">00:00</div>
         </div>
@@ -55,7 +56,7 @@
 
         <div style="margin-bottom:12px;">
             <div id="epal-count" style="font-size:11px; color:#aaa;">Gifts : 0</div>
-            <div style="display:flex; align-items:center; gap:8px;">
+            <div style="display:flex; align-items:center; gap:8px; margin-top:4px;">
                 <span id="epal-value-num" style="font-size:1.8em; font-weight:bold; color:#ffce00;">0.00</span>
                 <img src="${customIcon}" style="width:24px; height:24px; object-fit:contain;">
             </div>
@@ -68,21 +69,30 @@
     `;
     document.body.appendChild(dashboard);
 
-    // --- DRAG LOGIC ---
-    let isDragging = false, offset = { x: 0, y: 0 };
-    const handle = document.getElementById('drag-handle');
-    handle.onmousedown = (e) => {
+    // --- DRAG LOGIC (RE-FIXED) ---
+    let isDragging = false;
+    let offsetX, offsetY;
+    const dragHandle = document.getElementById('drag-handle');
+
+    dragHandle.addEventListener('mousedown', (e) => {
         isDragging = true;
-        offset.x = e.clientX - dashboard.offsetLeft;
-        offset.y = e.clientY - dashboard.offsetTop;
-    };
-    document.onmousemove = (e) => {
+        offsetX = e.clientX - dashboard.getBoundingClientRect().left;
+        offsetY = e.clientY - dashboard.getBoundingClientRect().top;
+        dragHandle.style.cursor = 'grabbing';
+    });
+
+    window.addEventListener('mousemove', (e) => {
         if (!isDragging) return;
-        dashboard.style.left = (e.clientX - offset.x) + "px";
-        dashboard.style.top = (e.clientY - offset.y) + "px";
+        dashboard.style.left = (e.clientX - offsetX) + "px";
+        dashboard.style.top = (e.clientY - offsetY) + "px";
         dashboard.style.bottom = "auto";
-    };
-    document.onmouseup = () => isDragging = false;
+        dashboard.style.right = "auto";
+    });
+
+    window.addEventListener('mouseup', () => {
+        isDragging = false;
+        dragHandle.style.cursor = 'move';
+    });
 
     // --- CORE LOGIC ---
     const updateUI = () => {
@@ -112,7 +122,6 @@
         if (giftPart && giftPart.innerText.includes("gifted")) {
             const fullText = giftPart.innerText;
             const targetFilter = document.getElementById('input-target').value.trim();
-
             if (targetFilter !== "" && !fullText.toLowerCase().includes("gifted " + targetFilter.toLowerCase())) return;
 
             const messageContainer = giftPart.closest('.hover\\:bg-surface-element-normal');
@@ -146,7 +155,7 @@
 
     const stopTracker = () => {
         isRunning = false; 
-        clearInterval(timerInterval);
+        if (timerInterval) clearInterval(timerInterval);
         document.getElementById('status-indicator').innerText = "OFF";
         document.getElementById('status-indicator').style.color = "#ff4d4d";
         document.getElementById('btn-start').innerText = "START";
