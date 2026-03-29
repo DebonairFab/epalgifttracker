@@ -1,48 +1,89 @@
-# 🎁 Epal Gift Counter 
+🎁 Epal Gift Counter — Complete Guide & Documentation
 
-A lightweight **Tampermonkey** script designed to track, count, and filter gifts in real-time within **Epal.gg** chatrooms.
-<img width="254" height="347" alt="Capture d&#39;écran 2026-03-29 011747" src="https://github.com/user-attachments/assets/ae5f13bc-43ee-4c53-8075-a815f8bcb0f8" />
+A lightweight Tampermonkey script designed to track, count, and filter gifts in real-time within Epal.gg chatrooms. This tool helps streamers and users manage their goals with a built-in timer and an automated leaderboard.
+
+    Disclaimer: This is an independent community tool and is not officially affiliated with Epal.gg.
+<img width="253" height="344" alt="Capture d&#39;écran 2026-03-29 160021" src="https://github.com/user-attachments/assets/8186d79e-067a-4b5d-9b63-6467a28ab9a6" />
+
+✨ Features
+
+    📈 Buffs Counter: Automatically calculates the total value of gifts in buffs/dollars.
+
+    🎯 Target Filtering: Enter a username to only track gifts received by a specific person. If empty, it tracks Everyone.
+
+    ⏱️ Built-in Timer: Set a duration (in minutes) and the tracker stops when the countdown reaches zero.
+
+    🏆 Top Donors: Real-time leaderboard showing the top 3 supporters of the session.
+
+    🚀 Auto-Send: One click to generate the leaderboard and send it directly into the Epal chat.
+
+    🖱️ Movable Interface: Click and drag the header to position the window anywhere on your screen.
+
+🛠️ 1. Installation Process
+
+To use this script, you need a browser extension that can run "UserScripts" (such as Tampermonkey).
+
+    Install Tampermonkey:
+
+        Go to tampermonkey.net and install the version for your browser (Chrome, Firefox, Edge).
+
+    Import the Script:
+
+        👉 [CLICK HERE TO INSTALL THE SCRIPT](https://github.com/DebonairFab/epalgifttracker/raw/refs/heads/main/Epal%20Gift%20Counter.user.js)
+
+        Note: If the link opens as text, copy the code, click the Tampermonkey icon > "Create a new script", paste it, and save (Ctrl+S).
+
+    Activate:
+
+        Navigate to any Epal Chatroom. The tracker will appear on the left side of your screen.
+
+🚀 2. How to Use
+Interface Overview
+
+    Target (Optional): Type the name of the person receiving the gifts (e.g., cakekkie). If left empty, it displays "(Everyone)" in the leaderboard.
+
+    Timer: Set your desired session time in minutes (e.g., 3, 5, or 10 min).
+
+    Start/Stop: The status indicator turns green (LIVE) when tracking is active.
+
+    Send Button: Generates the leaderboard, copies it to your clipboard, and automatically sends it into the Epal chatroom.
+
+    Reset: Clears all scores, donors, the timer, and the target field for a fresh start.
+
+📸 3. Visual Guide
+Setting a Target
+
+To track a specific person, type their name exactly as it appears on Epal.
+
+    <img width="257" height="351" alt="image" src="https://github.com/user-attachments/assets/17905c09-b2ab-4870-aed0-5c5a525c8ae4" />
 
 
----
+Sharing the Results
 
-## ✨ Features
+When you click SEND, the script generates a message and sends it to the chat instantly:
+Plaintext
 
-*   **📈 Buffs Counter:** Automatically calculates the total value of gifts in buffs.
-*   **🎯 Target Filtering:** Enter a username to only track gifts received by a specific person.
-*   **⏱️ Built-in Timer:** Set a duration (in minutes) and the tracker will automatically stop when the countdown reaches zero.
-*   **🏆 Top Donors:** Real-time leaderboard showing the top 3 most generous supporters of the session.
-*   **🖱️ Movable Interface:** Click and drag the header to position the window anywhere on your screen.
-*   **🛡️ High Precision:** Accurately distinguishes between the sender (donor) and the receiver, even in complex chat messages.
+GIFT LEADERBOARD (Everyone) 🏆
+1. PlayerA : 10.50 $
+2. PlayerB : 5.20 $
+3. PlayerC : 0.00 $
 
----
+    [ezgif-4d3ac94c0f28d8ab](https://github.com/user-attachments/assets/c892457c-611d-4edc-bd94-fe3f017314f2)
 
-## 🚀 Installation
+💎 Supported Gift Prices
 
-1.  Install the [Tampermonkey](https://www.tampermonkey.net/) extension for your browser (Chrome, Firefox, Edge).
-2.  Click the link below to install the script:
-    👉 **[INSTALL THE SCRIPT](https://raw.githubusercontent.com/DebonairFab/epalgifttracker/refs/heads/main/Epal%20Gift%20Counter)**
-3.  Navigate to any [Epal Chatroom](https://www.epal.gg/arcade/) and the tracker will appear!
-
----
-
-## 🛠️ How to Use
-
-1.  **Epal (Target):** Type the name of the person receiving the gifts (e.g., `cakekkie`). Leave it empty to track everyone.
-2.  **Timer:** Set your desired session time in minutes.
-3.  **Start:** Click **START**. The status indicator turns green, and tracking begins!
-4.  **Reset:** Clears all scores, donors, and the timer for a fresh session.
-
----
-
-## 💎 Supported Gift Prices
 The script recognizes most standard gifts, including:
-*   *Loving Castle (500), Golden Ascension (1000), Ace Reign (1600), Heavenly Match (2000)...*
-*   *Rose, Thumbs Up, Curious Locket, Magic Donut, etc.*
 
----
+    Heavenly Match (2000), Ace Reign (1600), Golden Ascension (1000), Loving Castle (500)...
 
-## 👨‍💻 Developer
-Created by **Fab**.
+    Rose, Thumbs Up, Curious Locket, Magic Donut, and more.
 
-> **Disclaimer:** This is an independent community tool and is not officially affiliated with Epal.gg.
+💬 4. Feedback & Support
+
+Your feedback is essential for improving this tool!
+
+    Suggestions: Please visit the suggestion-forums of the app.
+
+    Bugs: If a gift price is incorrect or a name is not detected, feel free to report it there.
+
+Created with ❤️ by Fab.
