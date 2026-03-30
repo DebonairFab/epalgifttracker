@@ -6,6 +6,7 @@
 // @author       Fab
 // @match        https://www.epal.gg/chill/chatroom/*
 // @grant        none
+// @license      MIT
 // ==/UserScript==
 
 (function() {
